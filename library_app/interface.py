@@ -1,3 +1,8 @@
+from .library import LibraryApp
+
+
+library_app = LibraryApp()
+
 class LibraryInterface:
     def __init__(self):
         self.__user_action = None
@@ -16,32 +21,42 @@ class LibraryInterface:
         action = self.__get_user_action()
         self.__process_action(action)
 
-    def __get_user_action(self):
+    @staticmethod
+    def __get_user_action():
         return input('>>> ')
 
     def __process_action(self, user_action):
         while True:
-            if user_action == '1':
-                print(f'Выбран пункт № {user_action}')
-                break
-            elif user_action == '2':
-                print(f'Выбран пункт № {user_action}')
-                break
-            elif user_action == '3':
-                print(f'Выбран пункт № {user_action}')
-                break
-            elif user_action == '4':
-                print(f'Выбран пункт № {user_action}')
-                break
-            elif user_action == '5':
-                print(f'Выбран пункт № {user_action}')
-                break
-            elif user_action == '0':
-                print('До свидания!')
-                break
-            else:
-                print("Неверный пункт! Введите цифру от 0 до 6!")
-                self.main_menu()
+            match user_action:
+                case '1':
+                    print("Список книг:")
+                    library_app.book_list()
+                    break
+                case '2':
+                    book_title = input("Введите название книги: ")
+                    book_author = input("Введите автора книги: ")
+                    book_year = input("Введите год издания книги: ")
+                    library_app.book_add(title=book_title, author=book_author, year=book_year)
+                    break
+                case '3':
+                    search_query = input("Введите название, автора или год издания книги: ")
+                    library_app.book_search(query=search_query)
+                    break
+                case '4':
+                    book_id = input("Введите ID книги для удаления: ")
+                    library_app.book_delete(book_id=book_id)
+                    break
+                case '5':
+                    book_id = input("Введите ID книги: ")
+                    book_status = input("Введите новый статус (в наличии или выдана): ")
+                    library_app.book_change_status(book_id=book_id, status=book_status)
+                    break
+                case '0':
+                    print('До свидания!')
+                    raise SystemExit
+                case _:
+                    print("Неверный пункт! Введите цифру от 0 до 6!")
+                    self.main_menu()
 
             
     def __book_actions(self):
