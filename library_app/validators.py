@@ -1,17 +1,15 @@
 from datetime import datetime
-from .crud import LibraryCRUD
-
-crud = LibraryCRUD()
+from .crud import crud
 
 
 MIN_YEAR = 1377
 CURRENT_YEAR = datetime.today().year
 STATUS_LIST = ('в наличии', 'на выдаче')
 
-def validate_book_id(book_id: str):
+def validate_book_id(session, book_id: str):
     if not book_id.isdigit():
         raise ValueError('ID книги должен быть цифрой')
-    if not crud.get_book_by_id(book_id):
+    if not crud.get_book_by_id(session, book_id):
         raise ValueError('Нет книги с таким ID')
     return book_id
 
