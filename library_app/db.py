@@ -15,6 +15,7 @@ class LibraryDB:
                                     'books':
                                         {}
                                 }}
+
             json.dump(initial_data, self.db_file, indent=2)
 
     def session_maker(self):

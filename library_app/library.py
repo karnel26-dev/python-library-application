@@ -18,19 +18,36 @@ class LibraryApp:
         crud.book_add(book_id, title, author, year)
 
     def book_delete(self, book_id: str):
-        book_id = validators.validate_book_id(book_id)
-        crud.book_delete(book_id)
+        try:
+            book_id = validators.validate_book_id(book_id)
+        except ValueError as err:
+            print(err)
+            return False
+        try:
+            crud.get_book_by_id(book_id)
+            crud.book_delete(book_id)
+            return True
+        except:
+            print('Такой книги нет')
+            return False
+
+    def get_book_status(self, book_id : str):
+        try:
+            book_id = validators.validate_book_id(book_id)
+            return crud.get_book_status(book_id)
+        except Exception as err:
+            print(err)
+        try:
+            book_status = crud.get_book_status(book_id)
+            return book_status
+        except Exception as err:
+            print(err)
 
     def book_search_title(self, title: str):
         return crud.get_books_by_title(title)
 
     def book_search_author(self, author: str):
         return crud.get_books_by_author(author)
-
-    def get_book_status(self, book_id : str):
-        book_status = crud.get_book_status(book_id)
-        if book_status:
-            return crud.get_book_status(book_id)
 
     def book_search_year(self, year: str):
         try:
@@ -46,11 +63,17 @@ class LibraryApp:
     def book_change_status(self, book_id: str, status: str):
         try:
             book_id = validators.validate_book_id(book_id)
-            status =  validators.validate_status(status)
-            current_book_status = crud.get_book_status(book_id)
-            if status == current_book_status:
-                raise Exception('Текущий статус совпадает с выбранным!')
-            return crud.book_change_status(book_id, status)
-        except Exception as err:
+        except BaseException as err:
             print(err)
-            return None
+            return
+        try:
+            status =  validators.validate_status(status)
+        except BaseException as err:
+            print(err)
+            return
+
+        current_book_status = crud.get_book_status(book_id)
+        if status == current_book_status:
+            print('Текущий статус совпадает с выбранным!')
+            return
+        return crud.book_change_status(book_id, status)

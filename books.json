@@ -1,11 +1,23 @@
 {
   "library": {
     "books": {
-      "13638494": {
+      "32336500": {
         "author": "aaa",
         "title": "aaa",
         "year": "2001",
-        "status": "На выдаче"
+        "status": "В наличии"
+      },
+      "28501427": {
+        "author": "bbb",
+        "title": "bbb",
+        "year": "2022",
+        "status": "В наличии"
+      },
+      "57121232": {
+        "author": "ccc",
+        "title": "ccc",
+        "year": "2014",
+        "status": "В наличии"
       }
     }
   }

@@ -11,8 +11,8 @@ class LibraryCRUD:
         data = json.loads(session.read())
         books = data.get('library', {}).get('books', {})
         book = books.get(book_id)
-        if not book:
-            raise Exception('Нет книги с указанным ID')
+        # if not book:
+        #     raise Exception('Нет книги с указанным ID')
         return book
 
     def book_list(self):
@@ -89,4 +89,10 @@ class LibraryCRUD:
         json.dump(books, session, indent=2, ensure_ascii=False)
 
     def book_delete(self, book_id: str):
-        pass
+        session.seek(0)
+        data = json.loads(session.read())
+        del data['library']['books'][book_id]
+        session.seek(0)
+        session.truncate()
+        json.dump(data, session, indent=2, ensure_ascii=False)
+
