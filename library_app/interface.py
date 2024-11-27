@@ -1,10 +1,6 @@
-from .library import LibraryApp
-
-
-library_app = LibraryApp()
-
 class LibraryInterface:
-    def __init__(self):
+    def __init__(self, library_app):
+        self.library_app = library_app
         self.__user_action = None
 
         self.__text_menu = ("Добро пожаловать в библиотеку!\n"
@@ -72,7 +68,7 @@ class LibraryInterface:
         while True:
             match user_action:
                 case '1':
-                    books = library_app.book_list()
+                    books = self.library_app.book_list()
                     if books:
                         print("Список книг:")
                         self.__print_books(books)
@@ -84,7 +80,7 @@ class LibraryInterface:
                     book_title = input("Введите название книги: ")
                     book_author = input("Введите автора книги: ")
                     book_year = input("Введите год издания книги: ")
-                    library_app.book_add(title=book_title, author=book_author, year=book_year)
+                    self.library_app.book_add(title=book_title, author=book_author, year=book_year)
                     self.print_back_message()
                 case '3':
                     self.print_search_menu()
@@ -93,12 +89,12 @@ class LibraryInterface:
                     book_id = input(">>> ")
                     if book_id == '0':
                         self.print_main_menu()
-                    if library_app.book_delete(book_id=book_id):
+                    if self.library_app.book_delete(book_id=book_id):
                         print(f'Книга с ID {book_id} удалена!')
 
                 case '5':
                     book_id = input("Введите ID книги или exit для выхода: ")
-                    book_status = library_app.get_book_status(book_id)
+                    book_status = self.library_app.get_book_status(book_id)
                     if book_id.lower() == 'exit':
                         self.print_main_menu()
                     if book_status:
@@ -116,7 +112,7 @@ class LibraryInterface:
             match user_action:
                 case '1':
                     title = input("Введите название книги: ")
-                    books = library_app.book_search_title(title)
+                    books = self.library_app.book_search_title(title)
                     if books:
                         self.__print_books(books)
                         self.print_back_message()
@@ -125,7 +121,7 @@ class LibraryInterface:
                         self.print_back_message()
                 case '2':
                     author = input("Введите автора книги: ")
-                    books = library_app.book_search_author(author)
+                    books = self.library_app.book_search_author(author)
                     if books:
                         self.__print_books(books)
                         self.print_back_message()
@@ -134,7 +130,7 @@ class LibraryInterface:
                         self.print_back_message()
                 case '3':
                     year = input("Введите год издания книги: ")
-                    books = library_app.book_search_year(year)
+                    books = self.library_app.book_search_year(year)
                     if books:
                         self.__print_books(books)
                         self.print_back_message()
@@ -151,7 +147,7 @@ class LibraryInterface:
         match user_action:
             case '1':
                 book_status = 'В наличии'
-                result = library_app.book_change_status(book_id=book_id, status=book_status)
+                result = self.library_app.book_change_status(book_id=book_id, status=book_status)
                 if result:
                     print('Статус книги успешно изменен')
                     self.print_back_message()
@@ -159,7 +155,7 @@ class LibraryInterface:
                     self.print_change_book_status_menu(book_id)
             case '2':
                 book_status = 'На выдаче'
-                result = library_app.book_change_status(book_id=book_id, status=book_status)
+                result = self.library_app.book_change_status(book_id=book_id, status=book_status)
                 if result:
                     print('Статус книги успешно изменен')
                     self.print_back_message()

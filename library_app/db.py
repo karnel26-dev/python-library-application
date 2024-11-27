@@ -22,6 +22,5 @@ class LibraryDB:
         return self.db_file
 
 
-db = LibraryDB('books.json')
-session = db.session_maker()
+Session = LibraryDB(db_name='books.json')
 

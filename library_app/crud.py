@@ -1,27 +1,21 @@
 import json
-from .db import session
 
 
 class LibraryCRUD:
-    def __init__(self):
-        pass
-
-    def get_book_by_id(self, book_id: str):
+    def get_book_by_id(self, session, book_id: str):
         session.seek(0)
         data = json.loads(session.read())
         books = data.get('library', {}).get('books', {})
         book = books.get(book_id)
-        # if not book:
-        #     raise Exception('Нет книги с указанным ID')
         return book
 
-    def book_list(self):
+    def book_list(self, session):
         session.seek(0)
         data = json.loads(session.read())
         books = data.get('library', {}).get('books',{})
         return books
 
-    def get_books_by_title(self, title: str):
+    def get_books_by_title(self, session, title: str):
         session.seek(0)
         data = json.loads(session.read())
         books = data.get('library', {}).get('books', {})
@@ -31,7 +25,7 @@ class LibraryCRUD:
                 result[book] = books[book]
         return result
 
-    def get_books_by_author(self, author: str):
+    def get_books_by_author(self, session, author: str):
         session.seek(0)
         data = json.loads(session.read())
         books = data.get('library', {}).get('books', {})
@@ -41,7 +35,7 @@ class LibraryCRUD:
                 result[book] = books[book]
         return result
 
-    def get_books_by_year(self, year: str):
+    def get_books_by_year(self, session, year: str):
         session.seek(0)
         data = json.loads(session.read())
         books = data.get('library', {}).get('books', {})
@@ -51,9 +45,9 @@ class LibraryCRUD:
                 result[book] = books[book]
         return result
 
-    def get_book_status(self, book_id: str):
+    def get_book_status(self, session, book_id: str):
         try:
-            book = self.get_book_by_id(book_id)
+            book = self.get_book_by_id(session, book_id)
         except Exception as err:
             print(err)
             book = None
@@ -61,10 +55,10 @@ class LibraryCRUD:
             status = book['status']
             return status
 
-    def book_change_status(self, book_id: str, status: str):
+    def book_change_status(self, session, book_id: str, status: str):
         session.seek(0)
         data = json.loads(session.read())
-        book =  self.get_book_by_id(book_id)
+        book =  self.get_book_by_id(session, book_id)
         if book:
             book['status'] = status
             book_obj = {book_id: book}
@@ -73,7 +67,7 @@ class LibraryCRUD:
             json.dump(data, session, indent=2, ensure_ascii=False)
             return True
 
-    def book_add(self, book_id: str, title: str, author: str, year: str):
+    def book_add(self, session, book_id: str, title: str, author: str, year: str):
         session.seek(0)
         books = json.loads(session.read())
         book_obj = {
@@ -88,7 +82,7 @@ class LibraryCRUD:
         session.seek(0)
         json.dump(books, session, indent=2, ensure_ascii=False)
 
-    def book_delete(self, book_id: str):
+    def book_delete(self, session, book_id: str):
         session.seek(0)
         data = json.loads(session.read())
         del data['library']['books'][book_id]
@@ -96,3 +90,5 @@ class LibraryCRUD:
         session.truncate()
         json.dump(data, session, indent=2, ensure_ascii=False)
 
+
+crud = LibraryCRUD()
