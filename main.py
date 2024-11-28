@@ -1,3 +1,5 @@
+from base64 import decode
+
 from library_app import LibraryApp, LibraryInterface
 from library_app.db import Session
 
