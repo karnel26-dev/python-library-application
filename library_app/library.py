@@ -6,6 +6,9 @@ from .db import Session
 
 
 class LibraryApp:
+    """
+    Class for business Logic layer application
+    """
     def __init__(self, session: Session) -> None:
         self.session = session
 
@@ -104,11 +107,11 @@ class LibraryApp:
         """
         try:
             book_id = validators.validate_book_id(self.session, book_id)
-        except ValueError as err:
+        except ValueError:
             return False
         try:
             status =  validators.validate_status(status)
-        except ValueError as err:
+        except ValueError:
             return False
 
         current_book_status = crud.get_book_status(self.session, book_id)

@@ -1,4 +1,7 @@
 class LibraryInterface:
+    """
+    Class for console interface of the application
+    """
     def __init__(self, library_app):
         self.library_app = library_app
         self.__user_action = None
@@ -28,11 +31,19 @@ class LibraryInterface:
                               "Для выхода введите 0\n")
 
     def print_main_menu(self):
+        """
+        Display main menu
+        :return: None
+        """
         print(self.__text_menu)
         action = self.__get_user_action()
         self.__process_main_menu(action)
 
     def print_back_message(self):
+        """
+        Display message for exit
+        :return: None
+        """
         print("\nВведите 0 для возврата в главное меню")
         action = self.__get_user_action()
         match action:
@@ -42,11 +53,20 @@ class LibraryInterface:
                 self.print_back_message()
 
     def print_search_menu(self):
+        """
+        Display search menu
+        :return: None
+        """
         print(self.__text_search)
         action = self.__get_user_action()
         self.__process_search(action)
 
     def print_change_book_status_menu(self, book_id: str):
+        """
+        Display menu for change status of a book
+        :param book_id: ID of a book
+        :return: None
+        """
         print(self.__text_book_status)
         action = self.__get_user_action()
         self.__process_change_status(action, book_id=book_id)
@@ -56,6 +76,11 @@ class LibraryInterface:
         return input('>>> ')
 
     def __print_books(self, books: dict) -> None:
+        """
+        Display information of a books
+        :param books: list of a books objects
+        :return:
+        """
         for book in books:
             print(f'ID - {book}')
             print(f'Автор - {books[book]["author"]}')
