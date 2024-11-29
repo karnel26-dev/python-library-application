@@ -69,7 +69,7 @@ class LibraryCRUD:
             json.dump(data, session, indent=2, ensure_ascii=False)
             return True
 
-    def book_add(self, session: Session, book_id: str, title: str, author: str, year: str) -> None:
+    def book_add(self, session: Session, book_id: str, title: str, author: str, year: str) -> bool:
         session.seek(0)
         books = json.loads(session.read())
         book_obj = {
@@ -83,6 +83,7 @@ class LibraryCRUD:
         books['library']['books'].update(book_obj)
         session.seek(0)
         json.dump(books, session, indent=2, ensure_ascii=False)
+        return True
 
     def book_delete(self, session: Session, book_id: str) -> None:
         session.seek(0)

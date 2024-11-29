@@ -21,7 +21,7 @@ class LibraryApp:
         title = title
         author = author
         year = validators.validate_year(year)
-        crud.book_add(self.session, book_id, title, author, year)
+        return crud.book_add(self.session, book_id, title, author, year)
 
     def book_delete(self, book_id: str) -> bool:
         """
@@ -51,12 +51,12 @@ class LibraryApp:
         try:
             book_id = validators.validate_book_id(self.session, book_id)
             return crud.get_book_status(self.session, book_id)
-        except Exception as err:
+        except ValueError as err:
             print(err)
         try:
             book_status = crud.get_book_status(self.session, book_id)
             return book_status
-        except Exception as err:
+        except ValueError as err:
             print(err)
 
     def book_search_title(self, title: str) -> dict:
@@ -104,13 +104,11 @@ class LibraryApp:
         """
         try:
             book_id = validators.validate_book_id(self.session, book_id)
-        except BaseException as err:
-            print(err)
+        except ValueError as err:
             return False
         try:
             status =  validators.validate_status(status)
-        except BaseException as err:
-            print(err)
+        except ValueError as err:
             return False
 
         current_book_status = crud.get_book_status(self.session, book_id)
